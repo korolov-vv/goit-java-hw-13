@@ -49,17 +49,18 @@ public class HTTPClientUtil {
     public static HttpRequest prepareGetUserByName(String param, String value) {
         return HttpRequest.newBuilder()
                 .header("Content-type", "application/json; charset=UTF-8")
-                .uri(URI.create(String.format("%s%s",
+                .uri(URI.create(String.format("%s%s?%s=%s",
                         JsonPlaceHolderApi.getURL(),
-                        JsonPlaceHolderApi.getUsersEndPoint())))
-                .method("GET", HttpRequest.BodyPublishers.ofString(param + "=" + value))
+                        JsonPlaceHolderApi.getUsersEndPoint(),
+                        param,
+                        value.replace(" ", "%20"))))
                 .build();
     }
 
-    public static HttpRequest prepareGetPostsOfTheUser(User user) {
+    public static HttpRequest prepareGetPostsOfTheUser(int id) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(String.format(
-                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getUsersEndPoint() + user.getId() + "posts")))
+                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getUsersEndPoint() + "/" + id + "/" + "posts")))
                 .GET()
                 .build();
     }
@@ -67,17 +68,17 @@ public class HTTPClientUtil {
     public static HttpRequest prepareGetComments(Post post) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(
-                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getPostsEndPoint() + post.getId() + JsonPlaceHolderApi.getCommentsEndPoint()
+                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getPostsEndPoint() + "/" + post.getId() + JsonPlaceHolderApi.getCommentsEndPoint()
                 ))
                 .GET()
                 .build();
     }
 
-    public static HttpRequest prepareGetTasks(User user) {
+    public static HttpRequest prepareGetTasks(int id) {
 
         return HttpRequest.newBuilder()
                 .uri(URI.create(
-                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getUsersEndPoint() + user.getId() + JsonPlaceHolderApi.getTasksEndPoint()
+                        JsonPlaceHolderApi.getURL() + JsonPlaceHolderApi.getUsersEndPoint() + "/" + id + JsonPlaceHolderApi.getTasksEndPoint()
                 ))
                 .GET()
                 .build();
